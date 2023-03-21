@@ -5,7 +5,7 @@ let rod1 = document.getElementById('rod1');
 let rod2 = document.getElementById('rod2');
 let ball = document.getElementById('ball');
 
-let score, maxScore, maxScorePlayer, movement, colorChange;
+let Rod1score, Rod2score, maxScore, maxScorePlayer, movement, colorChange;
 let gameStatus = false;
 
 
@@ -29,12 +29,12 @@ const player2Name = "Rod 2";
         maxScore = 0;
         maxScorePlayer = "Rod 1";
     } else {
-        alert(maxScorePlayer + " has maximum score of " + (maxScore*100));
+        alert(maxScorePlayer + " has maximum score of " + (maxScore * 100));
     }
-    
+
     /* player name of max score will pass argument */
     resetGame(maxScorePlayer);
-    
+
 })();
 
 /* reset game to new start------------------- */
@@ -52,7 +52,9 @@ function resetGame(playerName) {
         ball.style.top = (rod2.offsetTop - rod2.offsetHeight) - 5 + 'px'; /* -5 to place ball above rod2 accuratel y */
     }
 
-    score = 0;
+    Rod1score = 0;
+    Rod2score = 0;
+
     gameStatus = false;
 
 }
@@ -67,12 +69,16 @@ function storeWin(player, Currscore) {
         localStorage.setItem(highScoreValue, maxScore);
     }
 
+    /* BALL MOTION STOP */
     clearInterval(movement);
-    
+
+    /* color change set interval stop */
+    clearInterval(colorChange);
+
     resetGame(player);
-    
+
     alert(player + " wins with a score of " + (Currscore * 100) + ". Max score is: " + (maxScore * 100));
-    
+
 }
 
 /* Movement of rods */
@@ -99,6 +105,19 @@ function move() {
     /* ball movement and game start */
     if (event.code === "Enter") {
 
+        /* change color start after enter key pressed */
+        const hue = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hue"));
+        let hueVal = 0;
+
+        colorChange = setInterval(hueChange, 50);
+
+        function hueChange() {
+            hueVal += 1;
+            document.documentElement.style.setProperty("--hue", hue + hueVal);
+        }
+        /* change color starts ends */
+
+        /* main code of ball motion start here --------------------- */
         if (!gameStatus) {
 
             gameStatus = true;
@@ -116,26 +135,16 @@ function move() {
             let rod2_height = rod2.offsetHeight;
             let rod2_width = rod2.offsetWidth;
 
-            /* x distance of rod 1 */
-            let rod1_dimension = rod1.getBoundingClientRect();
-            let rod1_X = rod1_dimension.x;
-
-            /* x distance of rod 2 */
-            let rod2_dimension = rod2.getBoundingClientRect();
-            let rod2_X = rod2_dimension.x;
-
             /* speed of ball */
             let ball_speedX = 2;
             let ball_speedY = 2;
 
-            
             /* interval for ball movement */
             movement = setInterval(ball_move, 10);
             
             /* movement of ball function */
             function ball_move() {
-                
-                score = 0;
+
                 /* x distance of rod 1 */
                 let rod1_dimension = rod1.getBoundingClientRect();
                 let rod1_X = rod1_dimension.x;
@@ -163,10 +172,10 @@ function move() {
                 /* collision from rod 1 */
                 if (ball_Y <= rod1_height) {
                     ball_speedY = -ball_speedY;
-                    score++;
+                    Rod1score++;
                     /* rod 2 wins */
                     if (ball_pos < rod1_X || ball_pos > (rod1_X + rod1_width)) {
-                        storeWin(player2Name, score);
+                        storeWin(player2Name, Rod2score);
                     }
 
                 }
@@ -174,10 +183,10 @@ function move() {
                 /* collision from rod 2 */
                 if ((ball_Y + ball_width) >= (windowHeight - rod2_height)) {
                     ball_speedY = -ball_speedY;
-                    score++;
+                    Rod2score++;
                     /* rod 1 wins */
                     if (ball_pos < rod2_X || ball_pos > (rod2_X + rod2_width)) {
-                        storeWin(player1Name, score); 
+                        storeWin(player1Name, Rod1score);
                     }
                 }
             }
@@ -186,14 +195,3 @@ function move() {
     }
 }
 
-/* chnage color thweme */
-
-const hue = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hue"));
-let hueVal = 0;
-
-colorChange = setInterval(hueChange, 50);
-
-function hueChange() {
-    hueVal += 1;
-    document.documentElement.style.setProperty("--hue", hue + hueVal);
-}
