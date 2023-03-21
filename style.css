@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: var(--background-color);
+}
+
+
+
+:root {
+	--hue: 900;
+	--saturation: 50%;
+	--foreground-color: hsl(var(--hue), var(--saturation), 75%);
+	--background-color: hsl(var(--hue), var(--saturation), 20%);
+	--ball-color: hsl(var(--hue), var(--saturation), 50%);
+
+}
+
+#container {
+    position: relative;
+}
+
+#ball {
+    width: 25px;
+    height: 25px;
+    background-color: var(--ball-color);
+    position: fixed;
+    bottom: 25px;
+    left: 52.5%;
+    border-radius: 50%;
+}
+
+#rod1, #rod2 {
+    width: 200px;
+    height: 20px;
+    position: fixed;
+    left: 50%;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--background-color);
+    font-weight:600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    background-color: var(--foreground-color);
+}
+
+#rod1 {
+    top: 5px;    
+}
+
+#rod2 {
+    bottom: 5px;
+}
+  
