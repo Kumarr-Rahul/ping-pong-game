@@ -73,7 +73,6 @@ function storeWin(player, Currscore) {
     
     alert(player + " wins with a score of " + (Currscore * 100) + ". Max score is: " + (maxScore * 100));
     
-    closeInterval(colorChange);
 }
 
 /* Movement of rods */
